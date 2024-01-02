@@ -37,7 +37,7 @@ public class CommonUtils {
             "from find_libpython import find_libpython;" + "print(find_libpython())";
 
     private static final String GET_SITE_PACKAGES_PATH_SCRIPT =
-            "import sysconfig; print(sysconfig.get_paths()[\"purelib\"])";
+            "import sysconfig; print(sysconfig.get_paths()['purelib'])";
 
     private static final String GET_PEMJA_MODULE_PATH_SCRIPT =
             "import pemja;" + "import os;" + "print(os.path.dirname(pemja.__file__))";
@@ -50,8 +50,9 @@ public class CommonUtils {
     @SuppressWarnings("unchecked")
     public void loadLibrary(String pythonExec, String library) {
         if (!initialized) {
+            String pattern = isWindows() ? "^pemja_utils\\.cp.*\\.dll$" : "^pemja_utils\\.cpython-.*\\.so$";
             String utilsLibPath =
-                    getLibraryPathWithPattern(pythonExec, "^pemja_utils\\.cpython-.*\\.so$");
+                    getLibraryPathWithPattern(pythonExec, pattern);
             try {
                 System.load(utilsLibPath);
             } catch (UnsatisfiedLinkError error) {
@@ -113,6 +114,12 @@ public class CommonUtils {
                 for (File f : Objects.requireNonNull(libFile.listFiles())) {
                     if (f.isFile() && Pattern.matches(pattern, f.getName())) {
                         return f.getAbsolutePath();
+                    } else if (f.isDirectory() && Pattern.matches("^pemja-.*", f.getName())) {
+                        for (File innerFile : Objects.requireNonNull(f.listFiles())) {
+                            if (innerFile.isFile() && Pattern.matches(pattern, innerFile.getName())) {
+                                return innerFile.getAbsolutePath();
+                            }
+                        }
                     }
                 }
             }
@@ -145,8 +152,12 @@ public class CommonUtils {
         try {
             String out;
             if (pythonExec == null) {
-                // run in source code, use default `python3` to find python lib library.
-                out = execute(new String[] {"python3", "-c", GET_PYTHON_LIB_PATH_SCRIPT});
+                if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                    out = execute(new String[] {"python", "-c", GET_PYTHON_LIB_PATH_SCRIPT});
+                } else {
+                    // run in source code, use default `python3` to find python lib library.
+                    out = execute(new String[]{"python3", "-c", GET_PYTHON_LIB_PATH_SCRIPT});
+                }
             } else {
                 out = execute(new String[] {pythonExec, "-c", GET_PYTHON_LIB_PATH_SCRIPT});
             }
@@ -159,6 +170,10 @@ public class CommonUtils {
     public boolean isLinuxOs() {
         String os = System.getProperty("os.name");
         return os.startsWith("Linux");
+    }
+
+    public boolean isWindows() {
+        return System.getProperty("os.name", "").startsWith("Windows");
     }
 
     private String execute(String[] commands) throws IOException {
