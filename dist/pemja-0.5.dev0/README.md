@@ -37,9 +37,6 @@ Prerequisites for building PemJa:
 * Java 8 or 11 (Java 9 or 10 may work) with $JAVA_HOME correctly set
 * Python >= 3.8 (we recommend version 3.8, 3.9, 3.10, 3.11)
 
-NOTE for windows:
-* Microsoft Visual C++ 14.0 or greater is required. Get it with ["Microsoft C++ Build Tools"](https://www.microsoft.com/en-in/download/details.aspx?id=48159)
-
 ```
 git clone https://github.com/IGinX-THU/pemja.git
 cd pemja
