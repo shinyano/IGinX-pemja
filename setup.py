@@ -60,14 +60,14 @@ def get_java_home():
         return _java_home
 
     env_home = os.environ.get('JAVA_HOME')
-    if env_home:
-        if os.path.exists(env_home):
-            _java_home = env_home
-            return env_home
-        else:
-            print('Path {0} indicated by JAVA_HOME does not exist.'.format(env_home),
-                  file=sys.stderr)
-            sys.exit(-1)
+    # 依赖于JAVA_HOME，因此，它不能为空，也不能不存在
+    if env_home is not None and os.path.exists(env_home):
+        _java_home = env_home
+        return env_home
+    else:
+        print('Path {0} indicated by JAVA_HOME does not exist.'.format(env_home),
+              file=sys.stderr)
+        sys.exit(-1)
 
 
 def is_osx():
