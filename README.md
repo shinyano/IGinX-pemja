@@ -38,7 +38,7 @@ Prerequisites for building PemJa:
 * Python >= 3.8 (we recommend version 3.8, 3.9, 3.10, 3.11)
 
 ```
-git clone https://github.com/alibaba/pemja.git
+git clone https://github.com/IGinX-THU/pemja.git
 cd pemja
 mvn clean install -DskipTests
 pip install -r dev/dev-requirements.txt
