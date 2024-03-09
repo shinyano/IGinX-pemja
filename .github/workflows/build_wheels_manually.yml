@@ -23,6 +23,7 @@ jobs:
       - name: Build wheel
         run: |
           chmod +x dev/build-wheels.sh
+          chmod +x dev/lint-python.sh
           bash dev/build-wheels.sh
       - name: Upload wheels as artifacts
         uses: actions/upload-artifact@v2
