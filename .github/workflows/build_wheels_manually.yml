@@ -21,7 +21,9 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: Build wheel
-        run: bash dev/build-wheels.sh
+        run: |
+          chmod +x dev/build-wheels.sh
+          bash dev/build-wheels.sh
       - name: Upload wheels as artifacts
         uses: actions/upload-artifact@v2
         with:
