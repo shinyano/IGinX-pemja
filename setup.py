@@ -253,5 +253,6 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: Implementation :: CPython',
         'Operating System :: Unix',
+        'Operating System :: Microsoft :: Windows',
         'Operating System :: MacOS', ],
     ext_modules=extensions)
