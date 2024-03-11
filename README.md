@@ -30,7 +30,7 @@ Java Maven Dependency
 ## Installation from sources
 
 Prerequisites for building PemJa:
-* Unix-like environment (we use Linux, Mac OS X)
+* Unix-like environment (we use Linux, Mac OS X), Windows
 * Git
 * Maven (we recommend version 3.2.5 and require at least 3.1.1)
 * Java 8 or 11 (Java 9 or 10 may work) with $JAVA_HOME correctly set
@@ -57,7 +57,7 @@ pip install dist/*.tar.gz
 String path = ...;
 PythonInterpreterConfig config = PythonInterpreterConfig
     .newBuilder()
-    .setPythonExec("python3") // specify python exec
+    .setPythonExec("python3") // specify python exec, use "python" on Windows
     .addPythonPaths(path) // add path to search path
     .build();
 
