@@ -21,7 +21,7 @@
 
     <groupId>cn.edu.tsinghua.iginx</groupId>
     <artifactId>pemja</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <packaging>jar</packaging>
 

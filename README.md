@@ -1,4 +1,4 @@
-# PemJa
+# PemJaX
 
 ## What is it?
 
@@ -6,12 +6,16 @@ PemJa is an open source cross language call framework based on FFI. It aims to p
 
 framework of calling between different languages.
 
+PemJaX is an extension of PemJa , specifically designed to support WindowsOS. 
+This package inherits all the functionalities of PemJa and introduces necessary modifications and
+enhancements to ensure seamless operation in WindowsOS.
+
 ## Where to get it
 
-Python binary installers for the latest released version are available at the [Python package index](https://pypi.org/project/pemja)
+Python binary installers for the latest released version are available at the [Python package index](https://pypi.org/project/pemjax)
 
 ```bash
-pip install pemja
+pip install pemjax
 ```
 
 Java Maven Dependency

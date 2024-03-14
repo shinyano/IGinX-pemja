@@ -228,19 +228,19 @@ PACKAGE_DIR = {
 }
 
 setup(
-    name='pemja',
+    name='pemjax',
     version=VERSION,
     packages=["pemja"],
     include_package_data=True,
     package_dir=PACKAGE_DIR,
     package_data=PACKAGE_DATA,
-    author='Apache Software Foundation',
+    author='THU IGinX',
     license='https://www.apache.org/licenses/LICENSE-2.0',
-    author_email='hxbks2ks@gmail.com',
+    author_email='TSIginX@gmail.com',
     python_requires='>=3.8',
     install_requires=['find-libpython'],
     cmdclass={'build_ext': build_ext},
-    description='PemJa',
+    description='PemJaX',
     long_description=long_description,
     long_description_content_type='text/markdown',
     zip_safe=False,
