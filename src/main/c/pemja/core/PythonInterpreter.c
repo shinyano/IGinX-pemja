@@ -549,6 +549,106 @@ JNIEXPORT jobject JNICALL Java_pemja_core_PythonInterpreter_invokeMethod
     return result;
 }
 
+/*
+ * receive arrow root from java, convert root to arrow array and invoke the python method with array as arg
+ */
+JNIEXPORT void JNICALL Java_pemja_core_PythonInterpreter_invokeMethodOneArgArrow
+  (JNIEnv *env, jobject obj, jlong ptr, jstring jobjname, jstring jmethodname, jobject arg)
+{
+
+}
+
+
+// 定义从Java侧接收数据的本地方法
+//JNIEXPORT void JNICALL Java_pemja_core_PythonInterpreter_transferArrowData
+//  (JNIEnv *env, jobject obj, jlong ptr, jstring jobjname, jstring jmethodname, jobject jvm_vector_schema_root)
+//{
+//
+//    Jcp_BEGIN_INVOKE_METHODS
+//
+//    // 初始化Python
+//    if (!Py_IsInitialized()) {
+//        Py_Initialize();
+//        PyEval_InitThreads();
+//    }
+//
+//    // 导入Arrow Python模块
+//    PyObject *pModule = PyImport_ImportModule("pyarrow");
+//    if (!pModule) {
+//        PyErr_Print();
+//        return;
+//    }
+//
+//    // 获取Java对象的方法ID
+//    jclass vectorSchemaRootClass = (*env)->GetObjectClass(env, jvm_vector_schema_root);
+//    jmethodID getSchemaMethod = (*env)->GetMethodID(env, vectorSchemaRootClass, "getSchema", "()Lorg/apache/arrow/vector/types/pojo/Schema;");
+//    jmethodID getVectorMethod = (*env)->GetMethodID(env, vectorSchemaRootClass, "getVector", "(Ljava/lang/String;)Lorg/apache/arrow/vector/ValueVector;");
+//
+//    // 获取Schema对象
+//    jobject jvm_schema = (*env)->CallObjectMethod(env, jvm_vector_schema_root, getSchemaMethod);
+//
+//    // 获取Schema对象的方法ID
+//    jclass schemaClass = (*env)->GetObjectClass(env, jvm_schema);
+//    jmethodID getFieldsMethod = (*env)->GetMethodID(env, schemaClass, "getFields", "()Ljava/util/List;");
+//
+//    // 获取字段列表
+//    jobject jvm_fields_list = (*env)->CallObjectMethod(env, jvm_schema, getFieldsMethod);
+//
+//    // 获取字段列表的大小和方法ID
+//    jclass listClass = (*env)->GetObjectClass(env, jvm_fields_list);
+//    jmethodID sizeMethod = (*env)->GetMethodID(env, listClass, "size", "()I");
+//    jmethodID getMethod = (*env)->GetMethodID(env, listClass, "get", "(I)Ljava/lang/Object;");
+//
+//    jint size = (*env)->CallIntMethod(env, jvm_fields_list, sizeMethod);
+//
+//    // 创建Python列表用于存储Arrow数据
+//    PyObject *py_list = PyList_New(size);
+//
+//    // 遍历字段列表
+//    for (jint i = 0; i < size; i++) {
+//        jobject jvm_field = (*env)->CallObjectMethod(env, jvm_fields_list, getMethod, i);
+//
+//        // 获取字段名
+//        jclass fieldClass = (*env)->GetObjectClass(env, jvm_field);
+//        jmethodID getNameMethod = (*env)->GetMethodID(env, fieldClass, "getName", "()Ljava/lang/String;");
+//        jstring fieldName = (*env)->CallObjectMethod(env, jvm_field, getNameMethod);
+//        const char *field_name = (*env)->GetStringUTFChars(env, fieldName, 0);
+//
+//        // 获取字段对应的ValueVector
+//        jobject jvm_value_vector = (*env)->CallObjectMethod(env, jvm_vector_schema_root, getVectorMethod, fieldName);
+//
+//        // 转换Java ValueVector到Arrow Array
+//        std::shared_ptr<arrow::Array> arrow_array;
+//        arrow::Result<std::shared_ptr<arrow::Array>> result = arrow::py::ImportArrayFromVector(jvm_value_vector);
+//        if (result.ok()) {
+//            arrow_array = result.ValueOrDie();
+//        } else {
+//            PyErr_SetString(PyExc_RuntimeError, "Failed to import Arrow array from JVM");
+//            (*env)->ReleaseStringUTFChars(env, fieldName, field_name);
+//            return;
+//        }
+//
+//        // 将Arrow Array转换为Python对象
+//        PyObject *py_arrow_array = arrow::py::wrap_array(arrow_array);
+//        PyList_SetItem(py_list, i, py_arrow_array);
+//
+//        // 释放Java字符串
+//        (*env)->ReleaseStringUTFChars(env, fieldName, field_name);
+//    }
+//
+//    // 调用Python函数处理整个记录批
+//    PyObject *pFunc = PyObject_GetAttrString(pModule, "record_batch");
+//    if (pFunc && PyCallable_Check(pFunc)) {
+//        PyObject *py_args = PyTuple_Pack(1, py_list);
+//        PyObject_CallObject(pFunc, py_args);
+//        Py_XDECREF(py_args);
+//    } else {
+//        PyErr_Print();
+//    }
+//
+//    Jcp_END_INVOKE_METHODS
+//}
+
 // ----------------------------------------------------------------------
 
 /*

@@ -1,5 +1,3 @@
-// Copyright 2022 Alibaba Group Holding Limited.
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,22 +9,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef PEMJA_H
-#define PEMJA_H
+#ifndef _Included_arrow_postman
+#define _Included_arrow_postman
 
-#include <Python.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <jni.h>
+/* convert java arrow array to python */
+JcpAPI_FUNC(PyObject*) JcpPy_passArrow(JNIEnv*, jobject, jlong, jlong, jint);
 
-#include "jcpexports.h"
-#include "jcpport.h"
+/* convert python arrow array to java */
+JcpAPI_FUNC(jobject) JcpPy_recArrow(JNIEnv*, PyObject*);
 
-#include "pyexceptions.h"
-
-#include "pyutils.h"
-#include "pylib.h"
-
-#include "arrow_postman.h"
-#include "arrow_convertor.h"
+#ifdef __cplusplus
+}
+#endif
 
 #endif

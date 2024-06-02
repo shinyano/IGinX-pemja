@@ -66,7 +66,8 @@
     F(JMEMBER_TYPE, "java/lang/reflect/Member") \
     F(JMODIFIER_TYPE, "java/lang/reflect/Modifier") \
     F(JCLASS_TYPE, "java/lang/Class") \
-    F(JOBJECT_TYPE, "java/lang/Object")
+    F(JOBJECT_TYPE, "java/lang/Object") \
+    F(JARROWROOT_TYPE, "org/apache/arrow/vector/VectorSchemaRoot")
 
 // Define primitive class type.
 extern jclass JBOOLEAN_TYPE;

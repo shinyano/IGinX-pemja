@@ -142,7 +142,7 @@ _str_create_and_copy(const char* s)
     char* ns;
 
     size = sizeof(char) * (strlen(s) + 1);
-    ns = malloc(size);
+    ns = (char*)malloc(size);
     memset(ns, '\0', size);
     strcpy(ns, s);
 
@@ -171,10 +171,10 @@ _JcpPyFunction_Load(JNIEnv* env, JcpThread* jcp_thread, const char *name)
 
         if (!callable) {
 
-            dot = strchr(name, '.');
+            dot = (char *)strchr(name, '.');
 
             if (dot) {
-                module_name = malloc((dot - name + 1) * sizeof(char));
+                module_name = (char*)malloc((dot - name + 1) * sizeof(char));
                 strncpy(module_name, name, dot - name);
                 module_name[dot - name] = '\0';
                 module = PyDict_GetItemString(globals, module_name);
@@ -384,6 +384,8 @@ JcpAPI_FUNC(jobject) JcpPyObject_CallMethodOneJObjectArg(JNIEnv *, intptr_t, con
 
 /* Call the method named 'name' of object 'obj' with a variable number of Java arguments */
 JcpAPI_FUNC(jobject) JcpPyObject_CallMethod(JNIEnv *, intptr_t, const char *, const char *, jobjectArray);
+
+/* Call the method named 'name' of an arrow root 'arrow' with only one jobject argument */
 
 // ----------------------------------------------------------------------------------------
 

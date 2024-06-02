@@ -409,6 +409,8 @@ JcpPyObject_FromJObject(JNIEnv* env, jobject value)
         result = JcpPyJIterator_New(env, value, clazz);
     } else if ((*env)->IsAssignableFrom(env, clazz, JPYOBJECT_TYPE)) {
         result = (PyObject*) JavaPyObject_GetPyobject(env, value);
+//    } else if ((*env)->IsSameObject(env, clazz, JARROWROOT_TYPE)) {
+//        result = JcpPy_passArrow(env, value);
     } else {
         result = JcpPyJObject_New(env, &PyJObject_Type, value, clazz);
     }
@@ -421,6 +423,8 @@ JcpPyObject_FromJObject(JNIEnv* env, jobject value)
 }
 
 /* ------ Functions to return a Python primitive object from a C primitive value ----- */
+
+/* Function to return pyarrow array from Java array*/
 
 
 /* Function to return a Python Bool from a long value */

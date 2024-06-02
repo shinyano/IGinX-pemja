@@ -17,12 +17,15 @@
 
 import io
 import os
+import pybind11 as pybind11
 import sys
 import sysconfig
 import warnings
 from distutils.command.build_ext import build_ext as old_build_ext
 
 from setuptools import setup, Extension
+
+import pyarrow as pa
 
 if sys.version_info < (3, 8):
     print('Python versions prior to 3.7 are not supported for PemJa.',
@@ -171,6 +174,9 @@ def get_java_include():
         paths.append(include_win32)
     return paths
 
+def get_arrow_include():
+    import pyarrow as pa
+    return [pa.get_include(), ]
 
 def get_src_include():
     return ['src/main/c/Include']
@@ -182,15 +188,15 @@ def _is_using_gcc(obj):
         cc = sysconfig.get_config_var("CC")
         if not cc:
             cc = ""
-        is_gcc = "gcc" in cc
+        is_gcc = "gcc" in cc or "g++" in cc
     return is_gcc
 
 
 class build_ext(old_build_ext):
     def build_extension(self, ext):
         if _is_using_gcc(self):
-            if '-std=c99' not in ext.extra_compile_args:
-                ext.extra_compile_args.append('-std=c99')
+            if '-std=c++17' not in ext.extra_compile_args:
+                ext.extra_compile_args.append('-std=c++17')
         old_build_ext.build_extension(self, ext)
 
     def run(self):
@@ -204,18 +210,19 @@ class build_ext(old_build_ext):
 extensions = ([
     Extension(
         name="pemja_core",
-        sources=get_files('src/main/c/pemja/core', '.c'),
-        libraries=get_java_libraries() + get_python_libs(),
-        library_dirs = get_java_lib_folders(),
+        sources=get_files('src/main/c/pemja/core', '.c') + get_files('src/main/c/pemja/core', '.cc'),
+        libraries=get_java_libraries() + get_python_libs() + pa.get_libraries() + ['stdc++'],
+        library_dirs=get_java_lib_folders() + pa.get_library_dirs(),
         extra_link_args=get_java_linker_args(),
-        include_dirs=get_java_include() + ['src/main/c/pemja/core/include'],
-        language=3),
+        extra_compile_args=["/std:c++17"],
+        include_dirs=get_java_include() + ['src/main/c/pemja/core/include', pa.get_include()] + [pybind11.get_include()],
+        language="c++17"),
     Extension(
         name="pemja_utils",
         sources=get_files('src/main/c/pemja/utils', '.c'),
-        library_dirs = get_java_lib_folders(),
+        library_dirs = get_java_lib_folders() + pa.get_library_dirs(),
         extra_link_args=get_java_linker_args(),
-        include_dirs=get_java_include() + ['src/main/c/pemja/utils/include'],
+        include_dirs=get_java_include() + ['src/main/c/pemja/utils/include', pa.get_include()],
         language=3)
 ])
 
@@ -238,7 +245,7 @@ setup(
     license='https://www.apache.org/licenses/LICENSE-2.0',
     author_email='TSIginX@gmail.com',
     python_requires='>=3.8',
-    install_requires=['find-libpython'],
+    install_requires=['find-libpython', 'pyarrow'],
     cmdclass={'build_ext': build_ext},
     description='PemJaX',
     long_description=long_description,

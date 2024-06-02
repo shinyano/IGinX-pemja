@@ -11,22 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef PEMJA_H
-#define PEMJA_H
+#ifndef _Included_java_arrow_root
+#define _Included_java_arrow_root
 
-#include <Python.h>
-
-#include <jni.h>
-
-#include "jcpexports.h"
-#include "jcpport.h"
-
-#include "pyexceptions.h"
-
-#include "pyutils.h"
-#include "pylib.h"
-
-#include "arrow_postman.h"
-#include "arrow_convertor.h"
+jobject JavaArrowRoot_getVectorList(JNIEnv*);
+jlong JavaArrowRoot_getBufferAddr(JNIEnv*, jstring);
+jlong JavaArrowRoot_getValiBufferAddr(JNIEnv*, jstring);
 
 #endif
